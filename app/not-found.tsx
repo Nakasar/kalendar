@@ -1,7 +1,7 @@
-import Image from 'next/image';
-
-import background from './background.png';
+import Image from "next/image";
 import Link from "next/link";
+
+import background from "./background.png";
 
 export default function NotFound() {
   return (
@@ -18,7 +18,8 @@ export default function NotFound() {
           Hic sunt dracones
         </h1>
         <p className="mt-6 text-base leading-7 text-gray-600">
-          Votre aventure vous a mené-e en territoire inconnu car cette page ne semble pas exister.
+          Votre aventure vous a mené-e en territoire inconnu car cette page ne
+          semble pas exister.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link

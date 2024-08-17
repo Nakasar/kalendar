@@ -8,28 +8,28 @@ import {
   PopoverBackdrop,
   PopoverButton,
   PopoverPanel,
-} from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import {cn} from "@/lib/utils";
+} from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
+  name: "Tom Cook",
+  email: "tom@example.com",
   imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 const navigation = [
-  { name: 'Accueil', href: '/', current: true },
-  { name: 'Evènements', href: '/events', current: false },
-  { name: 'Rumeurs', href: '/rumeurs', current: false },
-  { name: 'Personnages', href: '/personnages', current: false },
+  { name: "Accueil", href: "/", current: true },
+  { name: "Evènements", href: "/events", current: false },
+  { name: "Rumeurs", href: "/rumeurs", current: false },
+  { name: "Personnages", href: "/personnages", current: false },
 ];
 const userNavigation = [
-  { name: 'Mon profil', href: '/account' },
-  { name: 'Paramètres', href: '/settings' },
-  { name: 'Déconnexion', href: '#' },
+  { name: "Mon profil", href: "/account" },
+  { name: "Paramètres", href: "/settings" },
+  { name: "Déconnexion", href: "#" },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -56,19 +56,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 type="button"
                 className="relative flex-shrink-0 rounded-full p-1 text-zaffre-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
               >
-                <span className="absolute -inset-1.5"/>
+                <span className="absolute -inset-1.5" />
                 <span className="sr-only">View notifications</span>
-                <BellIcon aria-hidden="true" className="h-6 w-6"/>
+                <BellIcon aria-hidden="true" className="h-6 w-6" />
               </button>
 
               {/* Profile dropdown */}
               <Menu as="div" className="relative ml-4 flex-shrink-0">
                 <div>
-                  <MenuButton
-                    className="relative flex rounded-full bg-white text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
-                    <span className="absolute -inset-1.5"/>
+                  <MenuButton className="relative flex rounded-full bg-white text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
+                    <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
-                    <img alt="" src={user.imageUrl} className="h-8 w-8 rounded-full"/>
+                    <img
+                      alt=""
+                      src={user.imageUrl}
+                      className="h-8 w-8 rounded-full"
+                    />
                   </MenuButton>
                 </div>
                 <MenuItems
@@ -77,7 +80,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 >
                   {userNavigation.map((item) => (
                     <MenuItem key={item.name}>
-                      <Link href={item.href} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                      <Link
+                        href={item.href}
+                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+                      >
                         {item.name}
                       </Link>
                     </MenuItem>
@@ -94,7 +100,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </label>
                 <div className="relative text-white focus-within:text-gray-600">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <MagnifyingGlassIcon aria-hidden="true" className="h-5 w-5"/>
+                    <MagnifyingGlassIcon
+                      aria-hidden="true"
+                      className="h-5 w-5"
+                    />
                   </div>
                   <input
                     id="desktop-search"
@@ -110,12 +119,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Menu button */}
             <div className="absolute right-0 flex-shrink-0 lg:hidden">
               {/* Mobile menu button */}
-              <PopoverButton
-                className="group relative inline-flex items-center justify-center rounded-md bg-transparent p-2 text-zaffre-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
-                <span className="absolute -inset-0.5"/>
+              <PopoverButton className="group relative inline-flex items-center justify-center rounded-md bg-transparent p-2 text-zaffre-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
+                <span className="absolute -inset-0.5" />
                 <span className="sr-only">Open main menu</span>
-                <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden"/>
-                <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block"/>
+                <Bars3Icon
+                  aria-hidden="true"
+                  className="block h-6 w-6 group-data-[open]:hidden"
+                />
+                <XMarkIcon
+                  aria-hidden="true"
+                  className="hidden h-6 w-6 group-data-[open]:block"
+                />
               </PopoverButton>
             </div>
           </div>
@@ -127,10 +141,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <Link
                       key={item.name}
                       href={item.href}
-                      aria-current={item.current ? 'page' : undefined}
+                      aria-current={item.current ? "page" : undefined}
                       className={cn(
-                        item.current ? 'text-white' : 'text-zaffre-100',
-                        'rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10',
+                        item.current ? "text-white" : "text-zaffre-100",
+                        "rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10",
                       )}
                     >
                       {item.name}
@@ -145,7 +159,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </label>
                   <div className="relative text-white focus-within:text-gray-600">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <MagnifyingGlassIcon aria-hidden="true" className="h-5 w-5"/>
+                      <MagnifyingGlassIcon
+                        aria-hidden="true"
+                        className="h-5 w-5"
+                      />
                     </div>
                     <input
                       id="mobile-search"
@@ -183,11 +200,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     />
                   </div>
                   <div className="-mr-2">
-                    <PopoverButton
-                      className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zaffre-500">
-                      <span className="absolute -inset-0.5"/>
+                    <PopoverButton className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zaffre-500">
+                      <span className="absolute -inset-0.5" />
                       <span className="sr-only">Close menu</span>
-                      <XMarkIcon aria-hidden="true" className="h-6 w-6"/>
+                      <XMarkIcon aria-hidden="true" className="h-6 w-6" />
                     </PopoverButton>
                   </div>
                 </div>
@@ -227,19 +243,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="pb-2 pt-4">
                 <div className="flex items-center px-5">
                   <div className="flex-shrink-0">
-                    <img alt="" src={user.imageUrl} className="h-10 w-10 rounded-full"/>
+                    <img
+                      alt=""
+                      src={user.imageUrl}
+                      className="h-10 w-10 rounded-full"
+                    />
                   </div>
                   <div className="ml-3 min-w-0 flex-1">
-                    <div className="truncate text-base font-medium text-gray-800">{user.name}</div>
-                    <div className="truncate text-sm font-medium text-gray-500">{user.email}</div>
+                    <div className="truncate text-base font-medium text-gray-800">
+                      {user.name}
+                    </div>
+                    <div className="truncate text-sm font-medium text-gray-500">
+                      {user.email}
+                    </div>
                   </div>
                   <button
                     type="button"
                     className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-zaffre-500 focus:ring-offset-2"
                   >
-                    <span className="absolute -inset-1.5"/>
+                    <span className="absolute -inset-1.5" />
                     <span className="sr-only">View notifications</span>
-                    <BellIcon aria-hidden="true" className="h-6 w-6"/>
+                    <BellIcon aria-hidden="true" className="h-6 w-6" />
                   </button>
                 </div>
                 <div className="mt-3 space-y-1 px-2">
@@ -258,13 +282,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </PopoverPanel>
         </div>
       </Popover>
-      <main className="-mt-24 pb-8">
-        {children}
-      </main>
+      <main className="-mt-24 pb-8">{children}</main>
       <footer>
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="border-t border-gray-200 py-8 text-center text-sm text-gray-500 sm:text-left">
-            <span className="block sm:inline">&copy; 2021 Your Company, Inc.</span>{' '}
+            <span className="block sm:inline">
+              &copy; 2021 Your Company, Inc.
+            </span>{" "}
             <span className="block sm:inline">All rights reserved.</span>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import {CalendarAside} from "@/app/(kalendar)/CalendarAside";
+import { CalendarAside } from "@/app/(kalendar)/CalendarAside";
 
 export default function Home() {
   return (

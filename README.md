@@ -1,4 +1,4 @@
-# Kalendar 
+# Kalendar
 
 > Un compagnon pour le jeu de rôle sur Guild Wars 2
 
