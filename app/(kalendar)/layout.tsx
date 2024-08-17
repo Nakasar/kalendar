@@ -13,12 +13,13 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
+
+import logo from "@/app/images/logo.png";
 
 const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  name: "Abaddon",
+  email: "abaddon@croisee.eu",
 };
 const navigation = [
   { name: "Accueil", href: "/", current: true },
@@ -41,12 +42,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Logo */}
             <div className="absolute left-0 flex-shrink-0 lg:static">
               <Link href="#">
-                <span className="sr-only">Your Company</span>
-                <img
-                  alt="Your Company"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=zaffre&shade=300"
-                  className="h-8 w-auto"
-                />
+                <span className="sr-only">Kalendar</span>
+                <Image alt="Kalendar" src={logo} className="h-10 w-auto" />
               </Link>
             </div>
 
@@ -67,11 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <MenuButton className="relative flex rounded-full bg-white text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
-                    <img
-                      alt=""
-                      src={user.imageUrl}
-                      className="h-8 w-8 rounded-full"
-                    />
+                    <Image alt="" src={logo} className="h-8 w-8 rounded-full" />
                   </MenuButton>
                 </div>
                 <MenuItems
@@ -109,7 +102,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     id="desktop-search"
                     name="search"
                     type="search"
-                    placeholder="Search"
+                    placeholder="Rechercher"
                     className="block w-full rounded-md border-0 bg-white/20 py-1.5 pl-10 pr-3 text-white placeholder:text-white focus:bg-white focus:text-gray-900 focus:ring-0 focus:placeholder:text-gray-500 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -121,7 +114,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Mobile menu button */}
               <PopoverButton className="group relative inline-flex items-center justify-center rounded-md bg-transparent p-2 text-zaffre-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
                 <span className="absolute -inset-0.5" />
-                <span className="sr-only">Open main menu</span>
+                <span className="sr-only">Ouvrir le menu principal</span>
                 <Bars3Icon
                   aria-hidden="true"
                   className="block h-6 w-6 group-data-[open]:hidden"
@@ -155,7 +148,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div>
                 <div className="mx-auto w-full max-w-md">
                   <label htmlFor="mobile-search" className="sr-only">
-                    Search
+                    Rechercher
                   </label>
                   <div className="relative text-white focus-within:text-gray-600">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -168,7 +161,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       id="mobile-search"
                       name="search"
                       type="search"
-                      placeholder="Search"
+                      placeholder="Rechercher"
                       className="block w-full rounded-md border-0 bg-white/20 py-1.5 pl-10 pr-3 text-white placeholder:text-white focus:bg-white focus:text-gray-900 focus:ring-0 focus:placeholder:text-gray-500 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -193,59 +186,35 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="pb-2 pt-3">
                 <div className="flex items-center justify-between px-4">
                   <div>
-                    <img
-                      alt="Your Company"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=zaffre&shade=600"
-                      className="h-8 w-auto"
-                    />
+                    <Image alt="Kalendar" src={logo} className="h-8 w-auto" />
                   </div>
                   <div className="-mr-2">
                     <PopoverButton className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zaffre-500">
                       <span className="absolute -inset-0.5" />
-                      <span className="sr-only">Close menu</span>
+                      <span className="sr-only">Fermer le menu</span>
                       <XMarkIcon aria-hidden="true" className="h-6 w-6" />
                     </PopoverButton>
                   </div>
                 </div>
                 <div className="mt-3 space-y-1 px-2">
-                  <Link
-                    href="#"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="#"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    href="#"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                  >
-                    Resources
-                  </Link>
-                  <Link
-                    href="#"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                  >
-                    Company Directory
-                  </Link>
-                  <Link
-                    href="#"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                  >
-                    Openings
-                  </Link>
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      aria-current={item.current ? "page" : undefined}
+                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
                 </div>
               </div>
               <div className="pb-2 pt-4">
                 <div className="flex items-center px-5">
                   <div className="flex-shrink-0">
-                    <img
+                    <Image
                       alt=""
-                      src={user.imageUrl}
+                      src={logo}
                       className="h-10 w-10 rounded-full"
                     />
                   </div>
@@ -262,7 +231,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-zaffre-500 focus:ring-offset-2"
                   >
                     <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
+                    <span className="sr-only">Notifications</span>
                     <BellIcon aria-hidden="true" className="h-6 w-6" />
                   </button>
                 </div>
@@ -287,9 +256,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="border-t border-gray-200 py-8 text-center text-sm text-gray-500 sm:text-left">
             <span className="block sm:inline">
-              &copy; 2021 Your Company, Inc.
-            </span>{" "}
-            <span className="block sm:inline">All rights reserved.</span>
+              &copy; 2024 Croisée des Chemins (&copy; ArenaNet pour toutes les
+              ressources issues de Guild Wars 2).
+            </span>
           </div>
         </div>
       </footer>

@@ -11,7 +11,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-4 lg:col-span-2">
             <section aria-labelledby="section-1-title">
               <h2 id="section-1-title" className="sr-only">
-                Section title
+                Dernières nouvelles
               </h2>
               <div className="overflow-hidden rounded-lg bg-white shadow">
                 <div className="p-6">
@@ -26,7 +26,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-4">
             <section aria-labelledby="section-2-title">
               <h2 id="section-2-title" className="sr-only">
-                Section title
+                Prochains évènements
               </h2>
               <div className="overflow-hidden rounded-lg bg-white shadow">
                 <div className="p-6">

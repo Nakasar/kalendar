@@ -1,86 +1,94 @@
+"use client";
+
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MapPinIcon,
+} from "@heroicons/react/20/solid";
+import { CalendarPlusIcon, Clock1Icon } from "lucide-react";
+import { DateTime } from "luxon";
 
 import { cn } from "@/lib/utils";
-
-const days = [
-  { date: "2021-12-27" },
-  { date: "2021-12-28" },
-  { date: "2021-12-29" },
-  { date: "2021-12-30" },
-  { date: "2021-12-31" },
-  { date: "2022-01-01", isCurrentMonth: true },
-  { date: "2022-01-02", isCurrentMonth: true },
-  { date: "2022-01-03", isCurrentMonth: true },
-  { date: "2022-01-04", isCurrentMonth: true },
-  { date: "2022-01-05", isCurrentMonth: true },
-  { date: "2022-01-06", isCurrentMonth: true },
-  { date: "2022-01-07", isCurrentMonth: true },
-  { date: "2022-01-08", isCurrentMonth: true },
-  { date: "2022-01-09", isCurrentMonth: true },
-  { date: "2022-01-10", isCurrentMonth: true },
-  { date: "2022-01-11", isCurrentMonth: true },
-  { date: "2022-01-12", isCurrentMonth: true, isToday: true },
-  { date: "2022-01-13", isCurrentMonth: true },
-  { date: "2022-01-14", isCurrentMonth: true },
-  { date: "2022-01-15", isCurrentMonth: true },
-  { date: "2022-01-16", isCurrentMonth: true },
-  { date: "2022-01-17", isCurrentMonth: true },
-  { date: "2022-01-18", isCurrentMonth: true },
-  { date: "2022-01-19", isCurrentMonth: true },
-  { date: "2022-01-20", isCurrentMonth: true },
-  { date: "2022-01-21", isCurrentMonth: true, isSelected: true },
-  { date: "2022-01-22", isCurrentMonth: true },
-  { date: "2022-01-23", isCurrentMonth: true },
-  { date: "2022-01-24", isCurrentMonth: true },
-  { date: "2022-01-25", isCurrentMonth: true },
-  { date: "2022-01-26", isCurrentMonth: true },
-  { date: "2022-01-27", isCurrentMonth: true },
-  { date: "2022-01-28", isCurrentMonth: true },
-  { date: "2022-01-29", isCurrentMonth: true },
-  { date: "2022-01-30", isCurrentMonth: true },
-  { date: "2022-01-31", isCurrentMonth: true },
-  { date: "2022-02-01" },
-  { date: "2022-02-02" },
-  { date: "2022-02-03" },
-  { date: "2022-02-04" },
-  { date: "2022-02-05" },
-  { date: "2022-02-06" },
-];
-const meetings = [
-  {
-    id: 1,
-    name: "Leslie Alexander",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    start: "1:00 PM",
-    startDatetime: "2022-01-21T13:00",
-    end: "2:30 PM",
-    endDatetime: "2022-01-21T14:30",
-  },
-  // More meetings...
-];
+import { useEffect, useState } from "react";
+import {
+  getDaysWithEventsInCalendarRangeForMonth,
+  RPEvent,
+} from "@/app/lib/events";
+import { CalendarIcon } from "@heroicons/react/24/solid";
 
 export function CalendarAside() {
+  const currentDate = DateTime.now().setLocale("fr");
+
+  const [dateFrom, setDateFrom] = useState(currentDate.startOf("month"));
+  const [selectedDay, setSelectedDay] = useState(currentDate);
+  const [days, setDays] = useState<
+    {
+      date: string;
+      isCurrentMonth?: boolean;
+      events?: RPEvent[];
+    }[]
+  >([]);
+  const [eventsOfSelectedDay, setEventsOfSelectedDay] = useState<RPEvent[]>([]);
+
+  useEffect(() => {
+    getDaysWithEventsInCalendarRangeForMonth(dateFrom.toISO()).then((days) => {
+      setDays(days);
+      const matchingSelectedDay = days.find((day) =>
+        DateTime.fromISO(day.date).hasSame(selectedDay, "day"),
+      );
+
+      if (matchingSelectedDay) {
+        setEventsOfSelectedDay(matchingSelectedDay.events ?? []);
+      }
+    });
+  }, [dateFrom]);
+
+  useEffect(() => {
+    const matchingSelectedDay = days.find((day) =>
+      DateTime.fromISO(day.date).hasSame(selectedDay, "day"),
+    );
+
+    if (matchingSelectedDay) {
+      setEventsOfSelectedDay(matchingSelectedDay.events ?? []);
+    }
+  }, [selectedDay]);
+
   return (
     <div>
       <div className="flex items-center">
         <h2 className="flex-auto text-sm font-semibold text-gray-900">
-          January 2022
+          {dateFrom.toFormat("LLLL yyyy")}
         </h2>
+        <button className="bg-gold rounded-full p-2 hover:bg-gold-600">
+          <CalendarPlusIcon className="size-4" />
+        </button>
         <button
           type="button"
           className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+          onClick={() => setDateFrom(dateFrom.minus({ month: 1 }))}
         >
-          <span className="sr-only">Previous month</span>
+          <span className="sr-only">Mois précédent</span>
           <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
         </button>
         <button
           type="button"
-          className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+          className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+          onClick={() => {
+            setDateFrom(currentDate.startOf("month"));
+            setSelectedDay(currentDate);
+          }}
         >
-          <span className="sr-only">Next month</span>
+          <span className="sr-only">Aujourd&apos;hui</span>
+          <CalendarIcon className="h-5 w-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+          onClick={() => setDateFrom(dateFrom.plus({ month: 1 }))}
+        >
+          <span className="sr-only">Mois suivant</span>
           <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
@@ -91,62 +99,117 @@ export function CalendarAside() {
         <div>J</div>
         <div>V</div>
         <div>S</div>
-        <div>S</div>
+        <div>D</div>
       </div>
       <div className="mt-2 grid grid-cols-7 text-sm">
-        {days.map((day, dayIdx) => (
-          <div
-            key={day.date}
-            className={cn(dayIdx > 6 && "border-t border-gray-200", "py-2")}
-          >
-            <button
-              type="button"
-              className={cn(
-                day.isSelected && "text-white",
-                !day.isSelected && day.isToday && "text-indigo-600",
-                !day.isSelected &&
-                  !day.isToday &&
-                  day.isCurrentMonth &&
-                  "text-gray-900",
-                !day.isSelected &&
-                  !day.isToday &&
-                  !day.isCurrentMonth &&
-                  "text-gray-400",
-                day.isSelected && day.isToday && "bg-indigo-600",
-                day.isSelected && !day.isToday && "bg-gray-900",
-                !day.isSelected && "hover:bg-gray-200",
-                (day.isSelected || day.isToday) && "font-semibold",
-                "mx-auto flex h-8 w-8 items-center justify-center rounded-full",
-              )}
+        {days.map((day, dayIdx) => {
+          const isSelected = DateTime.fromISO(day.date).hasSame(
+            selectedDay,
+            "day",
+          );
+          const isToday = DateTime.fromISO(day.date).hasSame(
+            currentDate,
+            "day",
+          );
+
+          return (
+            <div
+              key={day.date}
+              className={cn(dayIdx > 6 && "border-t border-gray-200", "py-2")}
             >
-              <time dateTime={day.date}>
-                {day.date.split("-").pop()?.replace(/^0/, "")}
-              </time>
-            </button>
-          </div>
-        ))}
+              <button
+                className={cn(
+                  isSelected && "text-black",
+                  !isSelected &&
+                    !isToday &&
+                    day.isCurrentMonth &&
+                    "text-gray-900",
+                  !isSelected &&
+                    !isToday &&
+                    !day.isCurrentMonth &&
+                    "text-gray-400",
+                  isSelected && isToday && "bg-gold",
+                  isSelected &&
+                    "border-4 border-zaffre border-dotted bg-gray-200",
+                  !isSelected && "hover:bg-gray-200",
+                  isToday && "bg-gold",
+                  (isSelected || isToday) && "font-semibold",
+                  "mx-auto flex flex-col h-8 w-8 items-center justify-center rounded-full",
+                )}
+                onClick={() => {
+                  const date = DateTime.fromISO(day.date);
+                  if (date.isValid) {
+                    setSelectedDay(date);
+                  }
+                }}
+              >
+                <time dateTime={day.date}>
+                  {DateTime.fromISO(day.date).day}
+                </time>
+              </button>
+
+              <div className="h-1.5 flex flex-row justify-center mt-1">
+                {day.events && day.events.length === 1 && (
+                  <svg
+                    viewBox="0 0 6 6"
+                    aria-hidden="true"
+                    className="h-1.5 w-1.5 fill-zaffre"
+                  >
+                    <circle r={3} cx={3} cy={3} />
+                  </svg>
+                )}
+                {day.events && day.events.length > 1 && (
+                  <div className="flex flex-row items-center">
+                    <svg
+                      viewBox="0 0 6 6"
+                      aria-hidden="true"
+                      className="h-1.5 w-1.5 fill-zaffre"
+                    >
+                      <circle r={3} cx={3} cy={3} />
+                    </svg>
+                    <PlusIcon className="size-3" />
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
       <section className="mt-12">
         <h2 className="text-base font-semibold leading-6 text-gray-900">
-          Schedule for <time dateTime="2022-01-21">January 21, 2022</time>
+          Programme du{" "}
+          <time dateTime={selectedDay.toISO()}>
+            {selectedDay.toLocaleString(DateTime.DATE_FULL)}
+          </time>
         </h2>
         <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
-          {meetings.map((meeting) => (
+          {eventsOfSelectedDay.map((event) => (
             <li
-              key={meeting.id}
+              key={event.id}
               className="group flex items-center space-x-4 rounded-xl px-4 py-2 focus-within:bg-gray-100 hover:bg-gray-100"
             >
-              <img
-                src={meeting.imageUrl}
-                alt=""
-                className="h-10 w-10 flex-none rounded-full"
-              />
               <div className="flex-auto">
-                <p className="text-gray-900">{meeting.name}</p>
-                <p className="mt-0.5">
-                  <time dateTime={meeting.startDatetime}>{meeting.start}</time>{" "}
-                  - <time dateTime={meeting.endDatetime}>{meeting.end}</time>
-                </p>
+                <p className="text-gray-900">{event.name}</p>
+                <div className="flex flex-row gap-2">
+                  <MapPinIcon className="size-5 self-center" />
+                  <p className="text-gray-400">{event.location}</p>
+                </div>
+                <div className="flex flex-row gap-2">
+                  <Clock1Icon className="size-4 self-center" />
+                  <p className="text-gray-600">
+                    <time dateTime={event.start}>
+                      {DateTime.fromISO(event.start, {
+                        locale: "fr",
+                      }).toLocaleString(DateTime.TIME_SIMPLE)}
+                    </time>{" "}
+                    -{" "}
+                    <time dateTime={event.end}>
+                      {DateTime.fromISO(event.end, {
+                        locale: "fr",
+                      }).toLocaleString(DateTime.TIME_SIMPLE)}
+                    </time>
+                  </p>
+                </div>
               </div>
               <Menu
                 as="div"
@@ -154,7 +217,7 @@ export function CalendarAside() {
               >
                 <div>
                   <MenuButton className="-m-2 flex items-center rounded-full p-1.5 text-gray-500 hover:text-gray-600">
-                    <span className="sr-only">Open options</span>
+                    <span className="sr-only">Options</span>
                     <EllipsisVerticalIcon
                       className="h-6 w-6"
                       aria-hidden="true"
@@ -172,7 +235,7 @@ export function CalendarAside() {
                         href="#"
                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                       >
-                        Edit
+                        Modifier
                       </a>
                     </MenuItem>
                     <MenuItem>
@@ -180,7 +243,7 @@ export function CalendarAside() {
                         href="#"
                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                       >
-                        Cancel
+                        Annuler
                       </a>
                     </MenuItem>
                   </div>
