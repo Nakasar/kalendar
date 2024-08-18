@@ -4,7 +4,11 @@ import { Clock1Icon } from "lucide-react";
 import { DateTime } from "luxon";
 import Image from "next/image";
 
-export default async function ({ params }: { params: { eventId: string } }) {
+export default async function EventDetails({
+  params,
+}: {
+  params: { eventId: string };
+}) {
   const event = await getEvent(params.eventId);
 
   if (!event) {
