@@ -5,23 +5,18 @@ import {
   PopoverButton,
   PopoverPanel,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 
 import logo from "@/app/images/logo.png";
-import { signOut } from "@/app/auth";
 import {
   UserMenuButton,
   UserMenuList,
 } from "@/app/(kalendar)/user-menu-buttons";
 
-const user = {
-  name: "Abaddon",
-  email: "abaddon@croisee.eu",
-};
 const navigation = [
   { name: "Accueil", href: "/", current: true },
   { name: "Evènements", href: "/events", current: false },
