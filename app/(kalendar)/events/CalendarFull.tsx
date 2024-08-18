@@ -17,11 +17,12 @@ import { CalendarPlusIcon } from "lucide-react";
 import { NewEventDialog } from "@/app/(kalendar)/events/NewEventDialog";
 import { useSession } from "next-auth/react";
 import { getDaysWithEventsInCalendarRangeForMonth } from "@/app/(kalendar)/events/actions";
+import { userHasPermissions } from "@/lib/permissions";
 
 export function CalendarFull() {
   const currentDate = DateTime.now().setLocale("fr");
 
-  const { status: sessionStatus } = useSession();
+  const session = useSession();
 
   const [dateFrom, setDateFrom] = useState(currentDate.startOf("month"));
   const [selectedDay, setSelectedDay] = useState(currentDate);
@@ -98,7 +99,7 @@ export function CalendarFull() {
               </button>
             </div>
             <div className="hidden md:ml-4 md:flex md:items-center">
-              {sessionStatus === "authenticated" && (
+              {userHasPermissions(session.data?.user, "events:create") && (
                 <NewEventDialog
                   openButton={
                     <button className="ml-6 rounded-md bg-gold px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gold-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-600 flex gap-2 items-center">
@@ -121,7 +122,7 @@ export function CalendarFull() {
                 transition
                 className="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
-                {sessionStatus === "authenticated" && (
+                {userHasPermissions(session.data?.user, "events:create") && (
                   <div className="py-1">
                     <MenuItem>
                       <NewEventDialog

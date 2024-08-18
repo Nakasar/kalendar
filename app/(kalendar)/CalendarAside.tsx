@@ -17,11 +17,12 @@ import { NewEventDialog } from "@/app/(kalendar)/events/NewEventDialog";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { getDaysWithEventsInCalendarRangeForMonth } from "@/app/(kalendar)/events/actions";
+import { userHasPermissions } from "@/lib/permissions";
 
 export function CalendarAside() {
   const currentDate = DateTime.now().setLocale("fr");
 
-  const { status: sessionStatus } = useSession();
+  const session = useSession();
 
   const [dateFrom, setDateFrom] = useState(currentDate.startOf("month"));
   const [selectedDay, setSelectedDay] = useState(currentDate);
@@ -66,7 +67,7 @@ export function CalendarAside() {
         <h2 className="flex-auto text-sm font-semibold text-gray-900">
           {dateFrom.toFormat("LLLL yyyy")}
         </h2>
-        {sessionStatus === "authenticated" && (
+        {userHasPermissions(session.data?.user, "events:create") && (
           <NewEventDialog
             openButton={
               <button className="bg-gold rounded-full p-2 hover:bg-gold-600">

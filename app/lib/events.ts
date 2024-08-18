@@ -2,7 +2,6 @@ import "server-only";
 
 import { DateTime } from "luxon";
 import dbPromise from "@/lib/mongo";
-import { makeCalendarDays } from "@/lib/utils";
 
 export type RPEvent = {
   id: string;
