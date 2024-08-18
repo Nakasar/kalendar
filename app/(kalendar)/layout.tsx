@@ -1,9 +1,5 @@
 import React from "react";
 import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
   Popover,
   PopoverBackdrop,
   PopoverButton,
@@ -16,6 +12,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import logo from "@/app/images/logo.png";
+import { signOut } from "@/app/auth";
+import {
+  UserMenuButton,
+  UserMenuList,
+} from "@/app/(kalendar)/user-menu-buttons";
 
 const user = {
   name: "Abaddon",
@@ -24,13 +25,8 @@ const user = {
 const navigation = [
   { name: "Accueil", href: "/", current: true },
   { name: "Evènements", href: "/events", current: false },
-  { name: "Rumeurs", href: "/rumeurs", current: false },
-  { name: "Personnages", href: "/personnages", current: false },
-];
-const userNavigation = [
-  { name: "Mon profil", href: "/account" },
-  { name: "Paramètres", href: "/settings" },
-  { name: "Déconnexion", href: "#" },
+  //{ name: "Rumeurs", href: "/rumeurs", current: false },
+  //{ name: "Personnages", href: "/personnages", current: false },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -41,7 +37,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="relative flex items-center justify-center py-5 lg:justify-between">
             {/* Logo */}
             <div className="absolute left-0 flex-shrink-0 lg:static">
-              <Link href="#">
+              <Link href="/">
                 <span className="sr-only">Kalendar</span>
                 <Image alt="Kalendar" src={logo} className="h-10 w-auto" />
               </Link>
@@ -49,40 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Right section on desktop */}
             <div className="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5">
-              <button
-                type="button"
-                className="relative flex-shrink-0 rounded-full p-1 text-zaffre-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-              >
-                <span className="absolute -inset-1.5" />
-                <span className="sr-only">View notifications</span>
-                <BellIcon aria-hidden="true" className="h-6 w-6" />
-              </button>
-
-              {/* Profile dropdown */}
-              <Menu as="div" className="relative ml-4 flex-shrink-0">
-                <div>
-                  <MenuButton className="relative flex rounded-full bg-white text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">Open user menu</span>
-                    <Image alt="" src={logo} className="h-8 w-8 rounded-full" />
-                  </MenuButton>
-                </div>
-                <MenuItems
-                  transition
-                  className="absolute -right-2 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:scale-95 data-[closed]:data-[leave]:transform data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-75 data-[leave]:ease-in"
-                >
-                  {userNavigation.map((item) => (
-                    <MenuItem key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
-                      >
-                        {item.name}
-                      </Link>
-                    </MenuItem>
-                  ))}
-                </MenuItems>
-              </Menu>
+              <UserMenuButton />
             </div>
 
             {/* Search */}
@@ -210,42 +173,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
               <div className="pb-2 pt-4">
-                <div className="flex items-center px-5">
-                  <div className="flex-shrink-0">
-                    <Image
-                      alt=""
-                      src={logo}
-                      className="h-10 w-10 rounded-full"
-                    />
-                  </div>
-                  <div className="ml-3 min-w-0 flex-1">
-                    <div className="truncate text-base font-medium text-gray-800">
-                      {user.name}
-                    </div>
-                    <div className="truncate text-sm font-medium text-gray-500">
-                      {user.email}
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-zaffre-500 focus:ring-offset-2"
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">Notifications</span>
-                    <BellIcon aria-hidden="true" className="h-6 w-6" />
-                  </button>
-                </div>
-                <div className="mt-3 space-y-1 px-2">
-                  {userNavigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
+                <UserMenuList />
               </div>
             </div>
           </PopoverPanel>

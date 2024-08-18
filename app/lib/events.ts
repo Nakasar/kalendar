@@ -8,13 +8,33 @@ import { makeCalendarDays } from "@/lib/utils";
 
 export type RPEvent = {
   id: string;
-  name: string;
+  title: string;
+  description: string;
   start: string;
   end: string;
   location: string;
   createdAt: string;
   creator: string;
 };
+
+export async function createEvent(event: RPEvent) {
+  const db = await dbPromise;
+
+  await db.collection("events").insertOne(event);
+}
+
+export async function getEvent(id: string): Promise<RPEvent | null> {
+  const db = await dbPromise;
+
+  const event = await db.collection<RPEvent>("events").findOne(
+    {
+      id,
+    },
+    { projection: { _id: 0 } },
+  );
+
+  return event;
+}
 
 export async function getEventsInDateRange(
   from: string,

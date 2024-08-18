@@ -1,7 +1,6 @@
 "use client";
 
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { EllipsisVerticalIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -17,9 +16,14 @@ import {
   RPEvent,
 } from "@/app/lib/events";
 import { CalendarIcon } from "@heroicons/react/24/solid";
+import { NewEventDialog } from "@/app/(kalendar)/events/NewEventDialog";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export function CalendarAside() {
   const currentDate = DateTime.now().setLocale("fr");
+
+  const { status: sessionStatus } = useSession();
 
   const [dateFrom, setDateFrom] = useState(currentDate.startOf("month"));
   const [selectedDay, setSelectedDay] = useState(currentDate);
@@ -61,9 +65,15 @@ export function CalendarAside() {
         <h2 className="flex-auto text-sm font-semibold text-gray-900">
           {dateFrom.toFormat("LLLL yyyy")}
         </h2>
-        <button className="bg-gold rounded-full p-2 hover:bg-gold-600">
-          <CalendarPlusIcon className="size-4" />
-        </button>
+        {sessionStatus === "authenticated" && (
+          <NewEventDialog
+            openButton={
+              <button className="bg-gold rounded-full p-2 hover:bg-gold-600">
+                <CalendarPlusIcon className="size-4" />
+              </button>
+            }
+          />
+        )}
         <button
           type="button"
           className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
@@ -182,14 +192,15 @@ export function CalendarAside() {
             {selectedDay.toLocaleString(DateTime.DATE_FULL)}
           </time>
         </h2>
-        <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
+        <div className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
           {eventsOfSelectedDay.map((event) => (
-            <li
+            <Link
+              href={`/events/${event.id}`}
               key={event.id}
               className="group flex items-center space-x-4 rounded-xl px-4 py-2 focus-within:bg-gray-100 hover:bg-gray-100"
             >
               <div className="flex-auto">
-                <p className="text-gray-900">{event.name}</p>
+                <p className="text-gray-900">{event.title}</p>
                 <div className="flex flex-row gap-2">
                   <MapPinIcon className="size-5 self-center" />
                   <p className="text-gray-400">{event.location}</p>
@@ -211,47 +222,9 @@ export function CalendarAside() {
                   </p>
                 </div>
               </div>
-              <Menu
-                as="div"
-                className="relative opacity-0 focus-within:opacity-100 group-hover:opacity-100"
-              >
-                <div>
-                  <MenuButton className="-m-2 flex items-center rounded-full p-1.5 text-gray-500 hover:text-gray-600">
-                    <span className="sr-only">Options</span>
-                    <EllipsisVerticalIcon
-                      className="h-6 w-6"
-                      aria-hidden="true"
-                    />
-                  </MenuButton>
-                </div>
-
-                <MenuItems
-                  transition
-                  className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-                >
-                  <div className="py-1">
-                    <MenuItem>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
-                      >
-                        Modifier
-                      </a>
-                    </MenuItem>
-                    <MenuItem>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
-                      >
-                        Annuler
-                      </a>
-                    </MenuItem>
-                  </div>
-                </MenuItems>
-              </Menu>
-            </li>
+            </Link>
           ))}
-        </ol>
+        </div>
       </section>
     </div>
   );
