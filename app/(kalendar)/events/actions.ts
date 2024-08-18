@@ -8,8 +8,16 @@ import { redirect } from "next/navigation";
 
 import { createEvent, RPEvent } from "@/app/lib/events";
 import { put } from "@vercel/blob";
+import { revalidatePath } from "next/cache";
+import { auth } from "@/app/auth";
 
 export async function submitEventCreation(formData: FormData) {
+  const session = await auth();
+
+  if (!session) {
+    throw new Error("Not authenticated");
+  }
+
   const startDate = formData.get("startDate");
   const startTime = formData.get("startTime");
 
@@ -42,5 +50,8 @@ export async function submitEventCreation(formData: FormData) {
 
   await createEvent(event);
 
+  revalidatePath(`/`);
+  revalidatePath(`/events`);
+  revalidatePath(`/events/${event.id}`);
   redirect(`/events/${event.id}`);
 }
