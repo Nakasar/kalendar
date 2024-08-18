@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function updateUser(
   userId: string,
-  data: { isAdmin?: boolean; permissions?: string[] },
+  data: { isAdmin?: boolean; permissions?: string[]; blocked?: boolean },
 ) {
   const session = await auth();
 
@@ -21,12 +21,19 @@ export async function updateUser(
     throw new Error("User not found");
   }
 
-  const update: { isAdmin?: boolean; permissions?: string[] } = {};
+  const update: {
+    isAdmin?: boolean;
+    permissions?: string[];
+    blocked?: boolean;
+  } = {};
   if (data.isAdmin !== undefined) {
     update.isAdmin = data.isAdmin;
   }
   if (data.permissions) {
     update.permissions = data.permissions;
+  }
+  if (data.blocked !== undefined) {
+    update.blocked = data.blocked;
   }
 
   await db.collection("users").updateOne({ id: userId }, { $set: update });

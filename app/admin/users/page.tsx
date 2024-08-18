@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Field, Label } from "@headlessui/react";
 import {
   UserAdminSwitch,
+  UserBlockedSwitch,
   UserPermissionsList,
 } from "@/app/admin/users/components";
 import Link from "next/link";
@@ -43,7 +44,7 @@ export default async function Users({
       <ul className="pt-4 space-x-2">
         {users.map((user) => (
           <li key={user.id} className="border-2 border-gray-200 p-4 rounded-md">
-            <div>
+            <div className="flex flex-col space-y-1">
               <p>{user.email}</p>
               <Field className="flex items-center">
                 <UserAdminSwitch isAdmin={user.isAdmin} userId={user.id} />
@@ -51,6 +52,12 @@ export default async function Users({
                   <span className="font-medium text-gray-900">
                     Administrateur
                   </span>
+                </Label>
+              </Field>
+              <Field className="flex items-center">
+                <UserBlockedSwitch blocked={user.blocked} userId={user.id} />
+                <Label as="span" className="ml-3 text-sm">
+                  <span className="font-medium text-gray-900">Bloqué</span>
                 </Label>
               </Field>
               <UserPermissionsList
