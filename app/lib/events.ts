@@ -1,5 +1,3 @@
-"use server";
-
 import "server-only";
 
 import { DateTime } from "luxon";
@@ -69,38 +67,4 @@ export async function getEventsInDateRange(
     .toArray();
 
   return events;
-}
-
-export async function getDaysWithEventsInCalendarRangeForMonth(
-  month: number,
-  year: number,
-) {
-  const date = DateTime.fromObject({ month, year }).toISO();
-  if (!date) {
-    throw new Error("Invalid date range");
-  }
-
-  const days = makeCalendarDays(date);
-
-  const events = await getEventsInDateRange(
-    days[0].date,
-    days[days.length - 1].date,
-  );
-
-  for (const day of days) {
-    day.events = events
-      .filter((event) =>
-        DateTime.fromISO(event.start).hasSame(
-          DateTime.fromISO(day.date),
-          "day",
-        ),
-      )
-      .sort(
-        (a, b) =>
-          DateTime.fromISO(a.start).diff(DateTime.fromISO(b.start))
-            .milliseconds,
-      );
-  }
-
-  return days;
 }

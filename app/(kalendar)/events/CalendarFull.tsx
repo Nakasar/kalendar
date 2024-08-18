@@ -11,14 +11,12 @@ import {
 import { cn } from "@/lib/utils";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import {
-  getDaysWithEventsInCalendarRangeForMonth,
-  RPEvent,
-} from "@/app/lib/events";
+import { RPEvent } from "@/app/lib/events";
 import Link from "next/link";
 import { CalendarPlusIcon } from "lucide-react";
 import { NewEventDialog } from "@/app/(kalendar)/events/NewEventDialog";
 import { useSession } from "next-auth/react";
+import { getDaysWithEventsInCalendarRangeForMonth } from "@/app/(kalendar)/events/actions";
 
 export function CalendarFull() {
   const currentDate = DateTime.now().setLocale("fr");
