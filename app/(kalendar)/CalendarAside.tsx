@@ -37,7 +37,10 @@ export function CalendarAside() {
   const [eventsOfSelectedDay, setEventsOfSelectedDay] = useState<RPEvent[]>([]);
 
   useEffect(() => {
-    getDaysWithEventsInCalendarRangeForMonth(dateFrom.toISO()).then((days) => {
+    getDaysWithEventsInCalendarRangeForMonth(
+      dateFrom.month,
+      dateFrom.year,
+    ).then((days) => {
       setDays(days);
       const matchingSelectedDay = days.find((day) =>
         DateTime.fromISO(day.date).hasSame(selectedDay, "day"),

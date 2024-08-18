@@ -6,6 +6,7 @@ import {
   ChevronRightIcon,
   ClockIcon,
   EllipsisHorizontalIcon,
+  MapPinIcon,
 } from "@heroicons/react/20/solid";
 import { cn } from "@/lib/utils";
 import { DateTime } from "luxon";
@@ -36,7 +37,10 @@ export function CalendarFull() {
   const [eventsOfSelectedDay, setEventsOfSelectedDay] = useState<RPEvent[]>([]);
 
   useEffect(() => {
-    getDaysWithEventsInCalendarRangeForMonth(dateFrom.toISO()).then((days) => {
+    getDaysWithEventsInCalendarRangeForMonth(
+      dateFrom.month,
+      dateFrom.year,
+    ).then((days) => {
       setDays(days);
       const matchingSelectedDay = days.find((day) =>
         DateTime.fromISO(day.date).hasSame(selectedDay, "day"),
@@ -272,37 +276,27 @@ export function CalendarFull() {
                     key={day.date}
                     type="button"
                     className={cn(
-                      day.isCurrentMonth ? "bg-white" : "bg-gray-50",
-                      (isSelected || isToday) && "font-semibold",
-                      isSelected && "text-white",
-                      !isSelected && isToday && "text-indigo-600",
-                      !isSelected &&
-                        day.isCurrentMonth &&
-                        !isToday &&
-                        "text-gray-900",
-                      !isSelected &&
-                        !day.isCurrentMonth &&
-                        !isToday &&
-                        "text-gray-500",
+                      day.isCurrentMonth
+                        ? "bg-white"
+                        : "bg-gray-50 text-gray-500",
+                      isSelected && "bg-gray-200",
                       "flex h-14 flex-col px-3 py-2 hover:bg-gray-100 focus:z-10",
                     )}
+                    onClick={() => {
+                      const date = DateTime.fromISO(day.date);
+
+                      if (date.isValid) {
+                        setSelectedDay(date);
+                      }
+                    }}
                   >
                     <time
                       dateTime={day.date}
                       className={cn(
-                        isSelected &&
-                          "flex h-6 w-6 items-center justify-center rounded-full",
-                        isSelected && isToday && "bg-gold",
-                        isSelected && !isToday && "bg-gray-900",
+                        isToday &&
+                          "bg-gold text-black flex h-6 w-6 items-center justify-center rounded-full",
                         "ml-auto",
                       )}
-                      onClick={() => {
-                        const date = DateTime.fromISO(day.date);
-
-                        if (date.isValid) {
-                          setSelectedDay(date);
-                        }
-                      }}
                     >
                       {DateTime.fromISO(day.date).day}
                     </time>
@@ -342,14 +336,15 @@ export function CalendarFull() {
                 >
                   <div className="flex-auto">
                     <p className="font-semibold text-gray-900">{event.title}</p>
+                    <div className="flex flex-row gap-2 text-gray-400">
+                      <MapPinIcon className="size-5 self-center" />
+                      <p className="">{event.location}</p>
+                    </div>
                     <time
                       dateTime={event.start}
-                      className="mt-2 flex items-center text-gray-700"
+                      className="mt-2 flex items-center text-gray-400"
                     >
-                      <ClockIcon
-                        className="mr-2 h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
+                      <ClockIcon className="mr-2 size-5 " aria-hidden="true" />
                       {DateTime.fromISO(event.start, {
                         locale: "fr",
                       }).toLocaleString(DateTime.TIME_SIMPLE)}

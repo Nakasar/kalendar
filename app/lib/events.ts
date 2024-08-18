@@ -71,13 +71,16 @@ export async function getEventsInDateRange(
   return events;
 }
 
-export async function getDaysWithEventsInCalendarRangeForMonth(date: string) {
-  const today = DateTime.fromISO(date).toISO();
-  if (!today) {
+export async function getDaysWithEventsInCalendarRangeForMonth(
+  month: number,
+  year: number,
+) {
+  const date = DateTime.fromObject({ month, year }).toISO();
+  if (!date) {
     throw new Error("Invalid date range");
   }
 
-  const days = makeCalendarDays(today);
+  const days = makeCalendarDays(date);
 
   const events = await getEventsInDateRange(
     days[0].date,
