@@ -7,6 +7,7 @@ import { nanoid } from "nanoid";
 import { redirect } from "next/navigation";
 
 import { createEvent, RPEvent } from "@/app/lib/events";
+import { put } from "@vercel/blob";
 
 export async function submitEventCreation(formData: FormData) {
   const startDate = formData.get("startDate");
@@ -22,9 +23,15 @@ export async function submitEventCreation(formData: FormData) {
     throw new Error("Invalid date/time");
   }
 
+  const coverFile = formData.get("cover") as File;
+  const coverBlob = await put(coverFile.name, coverFile, {
+    access: "public",
+  });
+
   const event: RPEvent = {
     id: nanoid(8),
     title: formData.get("title") as string,
+    cover: coverBlob.url,
     location: formData.get("location") as string,
     description: formData.get("description") as string,
     start: start,

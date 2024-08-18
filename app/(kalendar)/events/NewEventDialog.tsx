@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { submitEventCreation } from "@/app/(kalendar)/events/actions";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 
 export function NewEventDialog({
   openButton,
@@ -57,6 +58,40 @@ export function NewEventDialog({
                 name="location"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
+            </div>
+          </div>
+
+          <div className="col-span-full">
+            <label
+              htmlFor="cover-photo"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Couverture
+            </label>
+            <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+              <div className="text-center">
+                <PhotoIcon
+                  aria-hidden="true"
+                  className="mx-auto h-12 w-12 text-gray-300"
+                />
+                <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                  <label
+                    htmlFor="cover"
+                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                  >
+                    <span>Sélectionnez une image</span>
+                    <input
+                      id="cover"
+                      name="cover"
+                      type="file"
+                      className="sr-only"
+                    />
+                  </label>
+                </div>
+                <p className="text-xs leading-5 text-gray-600">
+                  PNG, JPG - max. 4Mo, format 16:9
+                </p>
+              </div>
             </div>
           </div>
 

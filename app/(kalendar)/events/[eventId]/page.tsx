@@ -2,6 +2,7 @@ import { getEvent } from "@/app/lib/events";
 import { MapPinIcon } from "@heroicons/react/20/solid";
 import { Clock1Icon } from "lucide-react";
 import { DateTime } from "luxon";
+import Image from "next/image";
 
 export default async function ({ params }: { params: { eventId: string } }) {
   const event = await getEvent(params.eventId);
@@ -40,7 +41,17 @@ export default async function ({ params }: { params: { eventId: string } }) {
                 Détails
               </h2>
               <div className="overflow-hidden rounded-lg bg-white shadow">
-                <div className="aspect-video w-full bg-gray-400"></div>
+                {event.cover ? (
+                  <Image
+                    alt="Illustration de l'évènement"
+                    className="aspect-video w-full bg-gray-400 object-cover"
+                    src={event.cover}
+                    width={200}
+                    height={200}
+                  />
+                ) : (
+                  <div className="aspect-video w-full bg-gray-400"></div>
+                )}
 
                 <div className="p-4">
                   <div className="flex flex-row gap-2 text-gray-400">

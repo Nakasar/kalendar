@@ -10,6 +10,7 @@ export type RPEvent = {
   id: string;
   title: string;
   description: string;
+  cover?: string;
   start: string;
   end: string;
   location: string;
@@ -21,6 +22,22 @@ export async function createEvent(event: RPEvent) {
   const db = await dbPromise;
 
   await db.collection("events").insertOne(event);
+}
+
+export async function getNextEvents(): Promise<RPEvent[]> {
+  const db = await dbPromise;
+
+  const events = await db
+    .collection("events")
+    .find({
+      end: { $gte: DateTime.now().toISO() },
+    })
+    .project<RPEvent>({ _id: 0 })
+    .sort({ start: 1 })
+    .limit(2)
+    .toArray();
+
+  return events;
 }
 
 export async function getEvent(id: string): Promise<RPEvent | null> {

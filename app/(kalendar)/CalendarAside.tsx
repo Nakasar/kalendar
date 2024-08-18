@@ -200,9 +200,9 @@ export function CalendarAside() {
               className="group flex items-center space-x-4 rounded-xl px-4 py-2 focus-within:bg-gray-100 hover:bg-gray-100"
             >
               <div className="flex-auto">
-                <p className="text-gray-900">{event.title}</p>
+                <p className="text-gray-900 font-semibold">{event.title}</p>
                 <div className="flex flex-row gap-2">
-                  <MapPinIcon className="size-5 self-center" />
+                  <MapPinIcon className="size-4 self-center" />
                   <p className="text-gray-400">{event.location}</p>
                 </div>
                 <div className="flex flex-row gap-2">
