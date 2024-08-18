@@ -72,7 +72,10 @@ export function UserPermissionsList({
   return (
     <div className="flex flex-row flex-wrap gap-2 items-center">
       {permissions.map((permission) => (
-        <span className="inline-flex items-center gap-x-0.5 rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600">
+        <span
+          key={permission}
+          className="inline-flex items-center gap-x-0.5 rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600"
+        >
           {permission}
           <button
             className="group relative -mr-1 h-3.5 w-3.5 rounded-sm hover:bg-gray-500/20"
