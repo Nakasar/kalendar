@@ -1,6 +1,13 @@
 export function userHasPermissions(
-  user: { isAdmin: boolean; permissions: string[] } | undefined | null,
+  user:
+    | { isAdmin: boolean; permissions: string[]; blocked?: boolean }
+    | undefined
+    | null,
   permission: string,
 ) {
-  return user && (user.isAdmin || user.permissions?.includes(permission));
+  return (
+    user &&
+    !user.blocked &&
+    (user.isAdmin || user.permissions?.includes(permission))
+  );
 }

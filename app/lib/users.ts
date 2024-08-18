@@ -7,6 +7,7 @@ export type User = {
   email: string;
   permissions: string[];
   isAdmin: boolean;
+  blocked: boolean;
 };
 
 export async function getUsers(offset: number): Promise<User[]> {
@@ -23,12 +24,9 @@ export async function getUsers(offset: number): Promise<User[]> {
 export async function getUserByEmail(email: string): Promise<User | null> {
   const db = await dbPromise;
 
-  return db.collection("users").findOne<{
-    id: string;
-    email: string;
-    permissions: string[];
-    isAdmin: boolean;
-  }>({ email }, { projection: { _id: 0 } });
+  return db
+    .collection("users")
+    .findOne<User>({ email }, { projection: { _id: 0 } });
 }
 
 export async function createUser(user: User): Promise<User> {
