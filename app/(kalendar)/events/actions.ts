@@ -7,7 +7,13 @@ import { DateTime } from "luxon";
 import { nanoid } from "nanoid";
 import { redirect } from "next/navigation";
 
-import { createEvent, getEventsInDateRange, RPEvent } from "@/app/lib/events";
+import {
+  createEvent,
+  getEvent,
+  getEventsInDateRange,
+  RPEvent,
+  updateEvent,
+} from "@/app/lib/events";
 import { put, PutBlobResult } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/app/auth";
@@ -111,6 +117,35 @@ export async function submitEventCreation(formData: FormData) {
   revalidatePath(`/events`);
   revalidatePath(`/events/${event.id}`);
   redirect(`/events/${event.id}`);
+}
+
+export async function updateEventAction(
+  eventId: string,
+  event: Partial<RPEvent>,
+) {
+  const session = await auth();
+
+  const existingEvent = await getEvent(eventId);
+
+  if (!existingEvent) {
+    throw new Error("Event not found");
+  }
+
+  if (
+    event.creator !== session?.user.id &&
+    !userHasPermissions(session?.user, "events:editAll")
+  ) {
+    throw new Error("Unauthorized");
+  }
+
+  await updateEvent(existingEvent.id, event);
+
+  revalidatePath(`/`);
+  revalidatePath(`/events`);
+  revalidatePath(`/events/${existingEvent.id}`);
+  revalidatePath(`/events/${existingEvent.id}/edit`);
+
+  redirect(`/events/${existingEvent.id}`);
 }
 
 export async function getDaysWithEventsInCalendarRangeForMonth(

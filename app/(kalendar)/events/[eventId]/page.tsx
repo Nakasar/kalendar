@@ -3,6 +3,8 @@ import { MapPinIcon } from "@heroicons/react/20/solid";
 import { Clock1Icon } from "lucide-react";
 import { DateTime } from "luxon";
 import Image from "next/image";
+import { EditEventButton } from "@/app/(kalendar)/events/[eventId]/components";
+import { marked } from "marked";
 
 export default async function EventDetails({
   params,
@@ -29,10 +31,16 @@ export default async function EventDetails({
               </h2>
               <div className="overflow-hidden rounded-lg bg-white shadow">
                 <div className="p-6 space-y-2">
-                  <h3 className="text-lg font-semibold">{event.title}</h3>
+                  <h3 className="text-xl font-semibold bg-zaffre text-white p-2 rounded-t-md">
+                    {event.title}
+                  </h3>
 
-                  <h4 className="text-md font-semibold">Description</h4>
-                  <p>{event.description}</p>
+                  <div
+                    className="prose"
+                    dangerouslySetInnerHTML={{
+                      __html: marked.parse(event.description),
+                    }}
+                  />
                 </div>
               </div>
             </section>
@@ -95,6 +103,10 @@ export default async function EventDetails({
                           })}
                       </time>
                     </p>
+                  </div>
+
+                  <div className="flex flex-row justify-end pt-4">
+                    <EditEventButton event={event} />
                   </div>
                 </div>
               </div>

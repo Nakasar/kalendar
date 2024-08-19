@@ -50,6 +50,28 @@ export async function getEvent(id: string): Promise<RPEvent | null> {
   return event;
 }
 
+export async function updateEvent(eventId: string, event: Partial<RPEvent>) {
+  const db = await dbPromise;
+
+  const update = {
+    title: event.title,
+    description: event.description,
+    cover: event.cover,
+    location: event.location,
+    start: event.start,
+    end: event.end,
+  };
+
+  await db.collection("events").updateOne(
+    {
+      id: eventId,
+    },
+    {
+      $set: update,
+    },
+  );
+}
+
 export async function getEventsInDateRange(
   from: string,
   to: string,
