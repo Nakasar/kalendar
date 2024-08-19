@@ -79,6 +79,15 @@ export async function submitEventCreation(formData: FormData) {
   let coverBlob: PutBlobResult | undefined;
   if (formData.has("cover")) {
     const coverFile = formData.get("cover") as File;
+
+    if (coverFile.size > 4 * 1024 * 1024) {
+      throw new Error("Cover image is too large");
+    }
+
+    if (coverFile.type !== "image/jpeg" && coverFile.type !== "image/png") {
+      throw new Error("Cover image must be a JPEG or PNG file");
+    }
+
     coverBlob = await put(coverFile.name, coverFile, {
       access: "public",
     });
