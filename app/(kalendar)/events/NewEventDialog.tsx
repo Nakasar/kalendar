@@ -11,11 +11,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { submitEventCreation } from "@/app/(kalendar)/events/actions";
-import { PhotoIcon } from "@heroicons/react/24/solid";
+import { PhotoIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
 import { cn } from "@/lib/utils";
-import { XIcon } from "lucide-react";
 
 export function NewEventDialog({
   openButton,
@@ -102,7 +101,7 @@ export function NewEventDialog({
                     setCoverPreview(null);
                   }}
                 >
-                  <XIcon className="size-5 inline" />
+                  <XMarkIcon className="size-5 inline" />
                 </button>
                 <img src={coverPreview.toString()} className="aspect-video" />
               </div>
