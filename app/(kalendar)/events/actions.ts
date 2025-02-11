@@ -3,6 +3,7 @@
 import "server-only";
 
 import { Ajv } from "ajv";
+import addFormats from "ajv-formats";
 import { DateTime } from "luxon";
 import { nanoid } from "nanoid";
 import { redirect } from "next/navigation";
@@ -21,6 +22,7 @@ import { makeCalendarDays } from "@/lib/utils";
 import { userHasPermissions } from "@/lib/permissions";
 
 const ajv = new Ajv();
+addFormats(ajv);
 
 export async function submitEventCreation(formData: FormData) {
   const session = await auth();
@@ -31,14 +33,23 @@ export async function submitEventCreation(formData: FormData) {
     throw new Error("Unauthorized");
   }
 
+  const start = DateTime.fromISO(
+    `${formData.get("startDate")}T${formData.get("startTime")}`,
+  )
+    .toUTC()
+    .toISO();
+  const end = DateTime.fromISO(
+    `${formData.get("endDate")}T${formData.get("endTime")}`,
+  )
+    .toUTC()
+    .toISO();
+
   const data = {
     title: formData.get("title"),
     location: formData.get("location"),
     description: formData.get("description"),
-    startDate: formData.get("startDate"),
-    startTime: formData.get("startTime"),
-    endDate: formData.get("endDate"),
-    endTime: formData.get("endTime"),
+    start,
+    end,
   };
 
   const schema = {
@@ -47,32 +58,22 @@ export async function submitEventCreation(formData: FormData) {
       title: { type: "string", minLength: 1, maxLength: 100 },
       location: { type: "string", maxLength: 100 },
       description: { type: "string", maxLength: 10000 },
-      startDate: { type: "string", format: "date" },
-      startTime: { type: "string", format: "time" },
-      endDate: { type: "string", format: "date" },
-      endTime: { type: "string", format: "time" },
+      start: { type: "string", format: "date-time" },
+      end: { type: "string", format: "date-time" },
     },
-    required: ["title", "startDate", "startTime", "endDate", "endTime"],
+    required: ["title", "start", "end"],
   };
   const validate = ajv.compile<{
     title: string;
     location: string;
     description: string;
-    startDate: string;
-    startTime: string;
-    endDate: string;
-    endTime: string;
+    start: string;
+    end: string;
   }>(schema);
   if (!validate(data)) {
+    console.warn({ data, errors: validate.errors });
     throw new Error("Invalid event data");
   }
-
-  const start = DateTime.fromISO(`${data.startDate}T${data.startTime}`)
-    .toUTC()
-    .toISO();
-  const end = DateTime.fromISO(`${data.endDate}T${data.endTime}`)
-    .toUTC()
-    .toISO();
 
   if (!start || !end) {
     throw new Error("Invalid date/time");
@@ -86,17 +87,19 @@ export async function submitEventCreation(formData: FormData) {
   if (formData.has("cover")) {
     const coverFile = formData.get("cover") as File;
 
-    if (coverFile.size > 4 * 1024 * 1024) {
-      throw new Error("Cover image is too large");
-    }
+    if (coverFile.size > 0) {
+      if (coverFile.size > 4 * 1024 * 1024) {
+        throw new Error("Cover image is too large");
+      }
 
-    if (coverFile.type !== "image/jpeg" && coverFile.type !== "image/png") {
-      throw new Error("Cover image must be a JPEG or PNG file");
-    }
+      if (coverFile.type !== "image/jpeg" && coverFile.type !== "image/png") {
+        throw new Error("Cover image must be a JPEG or PNG file");
+      }
 
-    coverBlob = await put(coverFile.name, coverFile, {
-      access: "public",
-    });
+      coverBlob = await put(coverFile.name, coverFile, {
+        access: "public",
+      });
+    }
   }
 
   const event: RPEvent = {
