@@ -20,7 +20,7 @@ import {
 const navigation = [
   { name: "Accueil", href: "/", current: true },
   { name: "Evènements", href: "/events", current: false },
-  //{ name: "Rumeurs", href: "/rumeurs", current: false },
+  { name: "Rumeurs", href: "/rumeurs", current: false },
   //{ name: "Personnages", href: "/personnages", current: false },
 ];
 
