@@ -9,9 +9,10 @@ import { marked } from "marked";
 export default async function EventDetails({
   params,
 }: {
-  params: { eventId: string };
+  params: Promise<{ eventId: string }>;
 }) {
-  const event = await getEvent(params.eventId);
+  const { eventId } = await params;
+  const event = await getEvent(eventId);
 
   if (!event) {
     return <div>Event not found</div>;
