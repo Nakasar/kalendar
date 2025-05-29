@@ -7,9 +7,10 @@ import { userHasPermissions } from "@/lib/permissions";
 export default async function EventEditPage({
   params,
 }: {
-  params: { eventId: string };
+  params: Promise<{ eventId: string }>;
 }) {
-  const event = await getEvent(params.eventId);
+  const { eventId } = await params;
+  const event = await getEvent(eventId);
   const session = await auth();
 
   if (!event) {
