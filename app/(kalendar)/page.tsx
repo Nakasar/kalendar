@@ -9,6 +9,8 @@ import Image from "next/image";
 export default async function Home() {
   const nextEvents = await getNextEvents();
 
+  const currentDate = DateTime.now().setLocale("fr");
+
   return (
     <>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -104,7 +106,7 @@ export default async function Home() {
               </h2>
               <div className="overflow-hidden rounded-lg bg-white shadow">
                 <div className="p-6">
-                  <CalendarAside />
+                  <CalendarAside currentDateISO={currentDate.toISO()} />
                 </div>
               </div>
             </section>

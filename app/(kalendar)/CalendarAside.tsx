@@ -19,9 +19,11 @@ import { useSession } from "next-auth/react";
 import { getDaysWithEventsInCalendarRangeForMonth } from "@/app/(kalendar)/events/actions";
 import { userHasPermissions } from "@/lib/permissions";
 
-export function CalendarAside() {
-  const currentDate = DateTime.now().setLocale("fr");
-
+export function CalendarAside({ currentDateISO }: { currentDateISO: string }) {
+  const currentDate = DateTime.fromISO(currentDateISO, { locale: "fr" });
+  if (!currentDate.isValid) {
+    throw new Error("Invalid currentDateISO provided");
+  }
   const session = useSession();
 
   const [dateFrom, setDateFrom] = useState(currentDate.startOf("month"));
