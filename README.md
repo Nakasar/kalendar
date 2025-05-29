@@ -6,8 +6,9 @@
 
 ### TODO list
 
-- [ ] Calendrier communautaire d'évènements.
-- [ ] Registre de rumeurs.
+- [x] Calendrier communautaire d'évènements.
+- [x] Registre de rumeurs.
+- [ ] Tableaux collaboratifs pour les guildes.
 - [ ] Fiche de présentation des personnages.
 - [ ] Carte intéractive avec lieux de RP et évènements.
 
@@ -16,3 +17,4 @@
 - [ ] Système de météo.
 
 ## Développeurs et Contributions
+
