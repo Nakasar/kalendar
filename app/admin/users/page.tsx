@@ -11,14 +11,15 @@ import Link from "next/link";
 export default async function Users({
   searchParams,
 }: {
-  searchParams: { offset: string };
+  searchParams: Promise<{ offset: string }>;
 }) {
-  if (isNaN(parseInt(searchParams.offset))) {
+  const { offset } = await searchParams;
+  if (isNaN(parseInt(offset))) {
     return redirect("/admin/users?offset=0");
   }
 
-  const offset = parseInt(searchParams.offset) ?? 0;
-  const users = await getUsers(offset);
+  const offsetParsed = parseInt(offset) ?? 0;
+  const users = await getUsers(offsetParsed);
 
   return (
     <>
@@ -27,13 +28,13 @@ export default async function Users({
 
         <div className="space-x-2">
           <Link
-            href={`/admin/users?offset=${offset - 10 >= 0 ? offset - 10 : 0}`}
+            href={`/admin/users?offset=${offsetParsed - 10 >= 0 ? offsetParsed - 10 : 0}`}
             className="border-2 border-gray-500 px-2 py-1 rounded-md"
           >
             Précédent
           </Link>
           <Link
-            href={`/admin/users?offset=${offset + 10}`}
+            href={`/admin/users?offset=${offsetParsed + 10}`}
             className="border-2 border-gray-500 px-2 py-1 rounded-md"
           >
             Suivant
