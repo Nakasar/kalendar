@@ -28,7 +28,7 @@
     "marked": "^14.1.4",
     "mongodb": "^6.16.0",
     "nanoid": "^5.1.5",
-    "next": "15.3.2",
+    "next": "15.3.8",
     "next-auth": "^5.0.0-beta.28",
     "react": "19.1.0",
     "react-day-picker": "^8.10.1",
